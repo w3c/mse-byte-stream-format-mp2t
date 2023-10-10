@@ -76,8 +76,9 @@
       // prevent error messages from being displayed for references to these objects.
       definitionMap: {},
 
-      postProcess: [ mediaSourcePostProcessor ]
+      postProcess: [ mediaSourcePostProcessor ],
 
+      xref: ["html"]
       };
     </script>
     <!-- script to register bugs -->
@@ -145,8 +146,8 @@
       </ol>
 
       <p>The user agent MUST accept and ignore other SI, such as CAT, that are invariant for all subsequent media segments.</p>
-      <p>The user agent MUST source attribute values for id, kind, label and language for <a def-id="audio-track"></a>, <a def-id="video-track"></a> and
-        <a def-id="text-track"></a> objects as described for MPEG-2 Transport Streams in the in-band tracks spec [[INBANDTRACKS]].</p>
+      <p>The user agent MUST source attribute values for id, kind, label and language for {{AudioTrack}}, {{VideoTrack}} and
+        {{TextTrack}} objects as described for MPEG-2 Transport Streams in the in-band tracks spec [[INBANDTRACKS]].</p>
     </section>
 
     <section id="mpeg2ts-media-segments">
