@@ -4,13 +4,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>MPEG-2 TS Byte Stream Format</title>
     <script src="https://www.w3.org/Tools/respec/respec-w3c" class="remove"></script>
-    <script src="https://w3c.github.io/media-source/media-source.js" class="remove"></script>
-    <script class="remove">
-      (function() {
-        var mp2tContainerSpecDefinitions = {};
-        mediaSourceAddDefinitionInfo("mp2t-byte-stream-format", "", mp2tContainerSpecDefinitions);
-      })();
-    </script>
 
     <script class="remove">
       var respecConfig = {
@@ -33,52 +26,11 @@
         { name: "Adrian Bateman (until April 2015)", url: "", company: "Microsoft Corporation", companyURL: "https://www.microsoft.com/" },
       ],
 
-      mseDefGroupName: "mp2t-byte-stream-format",
-      mseUnusedGroupNameExcludeList: ["media-source"],
-      mseContributors: [
-        "Bob Lund",
-        "Alex Giladi",
-        "Duncan Rowden",
-        "Mark Vickers",
-        "Glenn Adams",
-        "Michael Thornburgh",
-        "David Singer",
-      ],
-
       // name of the WG
       group: "media",
 
-      scheme: "https",
-
-      otherLinks: [{
-      key: 'Repository',
-      data: [{
-          value: 'We are on GitHub',
-          href: 'https://github.com/w3c/mse-byte-stream-format-mp2t/'
-        }, {
-          value: 'File a bug',
-          href: 'https://github.com/w3c/mse-byte-stream-format-mp2t/issues'
-        }, {
-          value: 'Commit history',
-          href: 'https://github.com/w3c/mse-byte-stream-format-mp2t/commits/main/index.html'
-        }]
-      },{
-        key: 'Mailing list',
-        data: [{
-          value: 'public-media-wg@w3.org',
-          href: 'https://lists.w3.org/Archives/Public/public-media-wg/'
-        }]
-      }],
-
-      preProcess: [ mediaSourceAddMainSpecDefinitionInfos, mediaSourcePreProcessor ],
-
-      // Empty definitions for objects declared in the document are here to
-      // prevent error messages from being displayed for references to these objects.
-      definitionMap: {},
-
-      postProcess: [ mediaSourcePostProcessor ],
-
-      xref: ["html"]
+      github: "w3c/mse-byte-stream-format-mp2t",
+      wgPublicList: "public-media-wg"
       };
     </script>
     <!-- script to register bugs -->
@@ -89,24 +41,23 @@
     <meta name="bug.component" content="Media Source Extensions">
     -->
   </head>
-  <body>
+  <body data-cite="html media-source">
     <section id="abstract">
-      This specification defines a <a def-id="mse-spec"></a> [[MEDIA-SOURCE]] byte stream format specification based on MPEG-2 Transport Streams.
+      This specification defines a [[[MEDIA-SOURCE]]] [[MEDIA-SOURCE]] byte stream format specification based on MPEG-2 Transport Streams [[MPEG2TS]].
     </section>
 
     <section id="sotd">
       <p>The working group maintains <a href="https://github.com/w3c/mse-byte-stream-format-mp2t/issues">a list of all bug reports that the editors have not yet tried to address</a>;
-         there may also be related open bugs in the [[MEDIA-SOURCE]] repository.</p>
+      there may also be related open bugs in the <a href="https://github.com/w3c/media-source">GitHub repository</a>.</p>
       <p>Implementors should be aware that this specification is not stable. <strong>Implementors who are not taking part in the discussions are likely to find the specification changing out from under them in incompatible ways.</strong> Vendors interested in implementing this specification before it eventually reaches the Candidate Recommendation stage should track the <a href="https://github.com/w3c/media-source">GitHub repository</a> and take part in the discussions.</p>
     </section>
 
     <section id="introduction">
       <h2>Introduction</h2>
-      <p>This specification defines segment formats for implementations of <a def-id="mse-spec"></a> [[!MEDIA-SOURCE]] that choose to support MPEG-2 Transport Streams
-        [[!MPEG2TS]].</p> It defines the MIME-type parameters used to signal codecs, and provides
-        the necessary format specific definitions for <a def-id="init-segments"></a>, <a def-id="media-segments"></a>, and <a def-id="random-access-points"></a> required by
-        the <a def-id="byte-stream-formats-section"></a> of the Media Source Extensions spec. This document also defines extra behaviors and state that only apply to this
-        byte stream format.</p>
+      <p>This specification defines segment formats for implementations of [[[MEDIA-SOURCE]]] [[!MEDIA-SOURCE]] that choose to support MPEG-2 Transport Streams [[!MPEG2TS]].</p>
+      <p>It defines the MIME-type parameters used to signal codecs, and provides
+      the necessary format specific definitions for [=initialization segments=], [=media segments=], and [=random access point=] required by
+      the <a data-cite="media-source#byte-stream-formats">Byte Stream Formats section</a> of the [[[MEDIA-SOURCE]]] specification. This document also defines extra behaviors and state that only apply to this byte stream format.</p>
     </section>
 
     <section id="mime-parameters">
@@ -114,7 +65,7 @@
       <p>The MIME-type/subtype pair of "video/MP2T", as specified in [[!RFC3551]], MUST be used for byte streams that conform
         to this specification.</p>
 
-      <p>This following parameters can be used in the MIME-type passed to <a def-id="isTypeSupported"></a> or <a def-id="addSourceBuffer"></a>.</p>
+      <p>This following parameter can be used in the MIME-type passed to {{MediaSource/isTypeSupported()}} or {{MediaSource/addSourceBuffer()}}.</p>
       <dl>
         <dt>codecs</dt>
         <dd>
@@ -126,9 +77,9 @@
 
     <section id="mpeg2ts-general">
       <h4>General Transport Stream Requirements</h4>
-      <p>MPEG-2 TS media and initialization segments MUST conform to the MPEG-2 TS Adaptive Profile (ISO/IEC 13818-1:2012 Amd. 2).</p>
+      <p>MPEG-2 TS [=media segments=] and [=initialization segments=] MUST conform to the MPEG-2 TS Adaptive Profile [[MPEG2TS]].</p>
 
-      <p>The user agent MUST run the <a def-id="append-decode-error-algorithm"></a> if any of the following conditions are met:</p>
+      <p>The user agent MUST run the [=append error=] algorithm if any of the following conditions are met:</p>
       <ol>
         <li>Segments do not contain complete MPEG-2 TS packets.</li>
         <li>Segments do not contain complete PES packets and sections.</li>
@@ -138,34 +89,34 @@
     </section>
     <section id="mpeg2ts-init-segments">
       <h4>Initialization Segments</h4>
-      <p>An MPEG-2 TS initialization segment consists of a single PAT and a single PMT.</p>
-      <p>The user agent MUST run the <a def-id="append-decode-error-algorithm"></a> if any of the following conditions are met:</p>
+      <p>An MPEG-2 TS [=initialization segment=] consists of a single PAT and a single PMT.</p>
+      <p>The user agent MUST run the [=append error=] algorithm if any of the following conditions are met:</p>
       <ol>
-        <li>A PAT is not present in the <a def-id="init-segment"></a></li>
-        <li>A PMT is not present in the <a def-id="init-segment"></a></li>
+        <li>A PAT is not present in the [=initialization segment=]</li>
+        <li>A PMT is not present in the [=initialization segment=]</li>
       </ol>
 
-      <p>The user agent MUST accept and ignore other SI, such as CAT, that are invariant for all subsequent media segments.</p>
-      <p>The user agent MUST source attribute values for id, kind, label and language for {{AudioTrack}}, {{VideoTrack}} and
+      <p>The user agent MUST accept and ignore other SI, such as CAT, that are invariant for all subsequent [=media segments=].</p>
+      <p>The user agent MUST source attribute values for `id`, `kind`, `label` and `language` for {{AudioTrack}}, {{VideoTrack}} and
         {{TextTrack}} objects as described for MPEG-2 Transport Streams in the in-band tracks spec [[INBANDTRACKS]].</p>
     </section>
 
     <section id="mpeg2ts-media-segments">
       <h4>Media Segments</h4>
 
-      <p>The user agent MUST run the <a def-id="append-decode-error-algorithm"></a> if any of the following conditions are met:</p>
+      <p>The user agent MUST run the [=append error=] algorithm if any of the following conditions are met:</p>
       <ol>
-        <li>A media segment relies on initialization information in another media segment.</li>
+        <li>A [=media segment=] relies on initialization information in another [=media segment=].</li>
         <li>At least one PES packet does not have a PTS timestamp.</li>
         <li>PCR is not present in the Segment prior to the first byte of a TS packet payload containing media data.</li>
       </ol>
 
-      The user agent will accept and ignore PSI that is identical to the information in the last initialization segment which may appear repeatedly throughout the segment.
+      The user agent will accept and ignore PSI that is identical to the information in the last [=initialization segment=] which may appear repeatedly throughout the segment.
     </section>
 
     <section id="mpeg2ts-random-access-points">
       <h4>Random Access Points</h4>
-      <p>A random access point as defined in this specification corresponds to Elementary Stream Random Access Point as defined in
+      <p>A [=random access point=] as defined in this specification corresponds to Elementary Stream Random Access Point as defined in
         [[!MPEG2TS]].</p>
     </section>
     <section id="mpeg2ts-discontinuities">
@@ -174,7 +125,7 @@
         variable, <dfn>MPEG2TS_timestampOffset</dfn>, to keep track of the offset that needs to be applied to timestamps
         that have rolled over or are part of a discontinuity. <a>MPEG2TS_timestampOffset</a> is initially set to 0 when the <a class="externalDFN">SourceBuffer</a> is
         created.  This offset MUST be applied to the timestamps as part of the conversion process from MPEG-2 TS packets
-        into <a def-id="coded-frames"></a> for the <a def-id="coded-frame-processing-algorithm"></a>. This results in the coded frame timestamps
+        into [=coded frames=] for the [=coded frame processing=] algorithm. This results in the coded frame timestamps
         for a packet being computed by the following equations:</p>
       <pre>
         Coded Frame Presentation Timestamp = (MPEG-2 TS presentation timestamp) + <var>MPEG2TS_timestampOffset</var>
@@ -185,8 +136,8 @@
         <li>Each time a timestamp rollover is detected, 2^33 MUST be added to <a>MPEG2TS_timestampOffset</a>.</li>
         <li>When a discontinuity is detected, <a>MPEG2TS_timestampOffset</a> MUST be adjusted to make the timestamps after the discontinuity appear
           to come immediately after the timestamps before the discontinuity.</li>
-        <li>When <a def-id="abort"></a> is called, <a>MPEG2TS_timestampOffset</a> MUST be set to 0.</li>
-        <li>When <a def-id="timestampOffset"></a> is successfully set, <a>MPEG2TS_timestampOffset</a> MUST be set to 0.</li>
+        <li>When {{SourceBuffer/abort()}} is called, <a>MPEG2TS_timestampOffset</a> MUST be set to 0.</li>
+        <li>When {{SourceBuffer/timestampOffset}} is successfully set, <a>MPEG2TS_timestampOffset</a> MUST be set to 0.</li>
       </ul>
     </section>
 
@@ -194,7 +145,15 @@
 
     <section id="acknowledgements">
       <h2>Acknowledgments</h2>
-      The editors would like to thank <a def-id="contributors"></a> for their contributions to this specification.
+      The editors would like to thank
+
+      Alex Giladi,
+      Bob Lund,
+      David Singer,
+      Duncan Rowden,
+      Glenn Adams,
+      Mark Vickers,
+      and Michael Thornburgh for their contributions to this specification.
     </section>
   </body>
 </html>
