@@ -54,7 +54,7 @@
 
     <section id="introduction">
       <h2>Introduction</h2>
-      <p>This specification defines segment formats for implementations of [[[MEDIA-SOURCE]]] [[!MEDIA-SOURCE]] that choose to support MPEG-2 Transport Streams [[!MPEG2TS]].</p>
+      <p>This specification defines segment formats for implementations of [[[MEDIA-SOURCE]]] [[MEDIA-SOURCE]] that choose to support MPEG-2 Transport Streams [[MPEG2TS]].</p>
       <p>It defines the MIME-type parameters used to signal codecs, and provides
       the necessary format specific definitions for [=initialization segments=], [=media segments=], and [=random access point=] required by
       the <a data-cite="media-source#byte-stream-formats">Byte Stream Formats section</a> of the [[[MEDIA-SOURCE]]] specification. This document also defines extra behaviors and state that only apply to this byte stream format.</p>
@@ -62,14 +62,14 @@
 
     <section id="mime-parameters">
       <h2>MIME-type info</h2>
-      <p>The MIME-type/subtype pair of "video/MP2T", as specified in [[!RFC3551]], MUST be used for byte streams that conform
+      <p>The MIME-type/subtype pair of "video/MP2T", as specified in [[RFC3551]], MUST be used for byte streams that conform
         to this specification.</p>
 
       <p>This following parameter can be used in the MIME-type passed to {{MediaSource/isTypeSupported()}} or {{MediaSource/addSourceBuffer()}}.</p>
       <dl>
         <dt>codecs</dt>
         <dd>
-          A comma separated list of codec IDs used to specify what codecs will be used in the byte stream. Implementations SHOULD accept IDs in the form specified by [[!RFC6381]].
+          A comma separated list of codec IDs used to specify what codecs will be used in the byte stream. Implementations SHOULD accept IDs in the form specified by [[RFC6381]].
           <div class="note">Implementations MAY only implement a subset of the codecs and profiles mentioned in the RFC.</div>
         </dd>
       </dl>
@@ -117,7 +117,7 @@
     <section id="mpeg2ts-random-access-points">
       <h4>Random Access Points</h4>
       <p>A [=random access point=] as defined in this specification corresponds to Elementary Stream Random Access Point as defined in
-        [[!MPEG2TS]].</p>
+        [[MPEG2TS]].</p>
     </section>
     <section id="mpeg2ts-discontinuities">
       <h4>Timestamp Rollover &amp; Discontinuities</h4>
